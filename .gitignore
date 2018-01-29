@@ -2,6 +2,7 @@
 !.gitignore
 !.npmignore
 !.eslint*
+!.esdoc*
 !.travis.yml
 
 *.orig

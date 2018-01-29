@@ -14,4 +14,8 @@ test-cov: lint
 	@NODE_ENV=test $(DEBUG) $(BIN)/istanbul cover $(BIN)/_mocha -- $(MOCHA_OPTS) $(TESTS)
 test-coveralls: test-cov
 	@cat ./coverage/lcov.info | $(BIN)/coveralls --verbose
-.PHONY: lint test test-cov test-coveralls
+docs:
+	@$(BIN)/esdoc
+docs-open: docs
+	@open docs/index.html
+.PHONY: lint test test-cov test-coveralls docs docs-open

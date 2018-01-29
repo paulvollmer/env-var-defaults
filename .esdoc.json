@@ -1,0 +1,50 @@
+{
+  "source": "./lib",
+  "destination": "./docs",
+  "includes": ["\\.js$"],
+  "excludes": [],
+  "index": "./README.md",
+  "package": "./package.json",
+  "plugins": [
+    {
+      "name": "esdoc-standard-plugin",
+      "option": {
+        "lint": {"enable": true},
+        "coverage": {"enable": true},
+        "accessor": {"access": ["public", "protected", "private"], "autoPrivate": true},
+        "undocumentIdentifier": {"enable": false},
+        "unexportedIdentifier": {"enable": true},
+        "typeInference": {"enable": true},
+        "brand": {
+          "logo": "",
+          "title": "env-var-defaults",
+          "description": "env-var-defaults",
+          "repository": "https://github.com/Wiredcraft/env-var-defaults",
+          "site": "https://Wiredcraft.net",
+          "author": "https://github.com/Wiredcraft",
+          "image": "https://wiredcraft.com/assets/logo.svg"
+        },
+        "test": {
+          "source": "./test/",
+          "interfaces": ["describe", "it"],
+          "includes": ["(test|Test)\\.js$"],
+          "excludes": ["\\.config\\.js$"]
+        }
+      }
+    },
+    {
+      "name": "esdoc-ecmascript-proposal-plugin",
+      "option": {
+        "classProperties": true,
+        "objectRestSpread": true,
+        "doExpressions": true,
+        "functionBind": true,
+        "functionSent": true,
+        "asyncGenerators": true,
+        "decorators": true,
+        "exportExtensions": true,
+        "dynamicImport": true
+      }
+    }
+  ]
+}
