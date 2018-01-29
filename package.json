@@ -1,6 +1,6 @@
 {
   "name": "env-var-defaults",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Give the env-var module different default values per current NODE_ENV.",
   "author": {
     "name": "Wiredcraft",
@@ -8,7 +8,8 @@
     "url": "http://wiredcraft.com"
   },
   "contributors": [
-    "Makara Wang"
+    "Makara Wang",
+    "Paul Vollmer"
   ],
   "keywords": [
     "ENV",
