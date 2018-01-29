@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl">
+  <title data-ice="title">Home | env-var-defaults</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="env-var-defaults"><meta property="og:type" content="website"><meta property="og:url" content="https://Wiredcraft.net"><meta property="og:site_name" content="env-var-defaults"><meta property="og:title" content="env-var-defaults"><meta property="og:image" content="https://wiredcraft.com/assets/logo.svg"><meta property="og:description" content="env-var-defaults"><meta property="og:author" content="https://github.com/Wiredcraft"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="env-var-defaults"><meta property="twitter:description" content="env-var-defaults"><meta property="twitter:image" content="https://wiredcraft.com/assets/logo.svg"></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/Wiredcraft/env-var-defaults"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-builder">builder</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-injected">injected</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-DEFAULT_ENV">DEFAULT_ENV</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-DEFAULT_ENV_LIST">DEFAULT_ENV_LIST</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-DEFAULT_ENV_NAME">DEFAULT_ENV_NAME</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><div data-ice="index" class="github-markdown"><h1 id="env-var-defaults">Env Var Defaults</h1><p><a href="https://travis-ci.org/Wiredcraft/env-var-defaults"><img src="https://travis-ci.org/Wiredcraft/env-var-defaults.svg?branch=master" alt="Build Status"></a> <a href="https://coveralls.io/github/Wiredcraft/env-var-defaults?branch=master"><img src="https://coveralls.io/repos/github/Wiredcraft/env-var-defaults/badge.svg?branch=master" alt="Coverage Status"></a></p>
+<p>Give the env-var module different default values per current NODE_ENV. Can be also used independently.</p>
+<h2 id="why">Why</h2><p>First of all, there&apos;s a rule of thumb:</p>
+<blockquote>
+<p>Variables explicitly set in the environment <a href="https://12factor.net/config">always have final say</a>.</p>
+</blockquote>
+<p>We often use a great module, <a href="https://www.npmjs.com/package/env-var">env-var</a>, to read the environment variables and parse them, and if a variable is missing we can set a default value for it.</p>
+<p>Sometimes we want to have environment specific <strong>defaults</strong>, which shouldn&apos;t override the environment variables but shouldn&apos;t be overridden by the default value either. This can lead to confusion as which override which and when to set default values etc.</p>
+<h2 id="how">How</h2><pre><code class="lang-js"><code class="source-code prettyprint">// Require.
+const { builder, injected } = require(&apos;env-var-defaults&apos;);
+
+// The injected/augmented env-var.
+const env = injected();
+
+// Use it, and give it a list of default values.
+const logStream = env.get(&apos;LOG_STREAM&apos;, [&apos;debug&apos;, &apos;debug&apos;, &apos;syslog&apos;, &apos;syslog&apos;]).asString();</code>
+</code></pre>
+<h3 id="the--quot-builder-quot-">The &quot;builder&quot;</h3><p>The <code>builder</code> is the base, and can be used independently. When invoked, it can give you a getter function:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">const defaults = builder([envList, [envName]]);</code>
+</code></pre>
+<ul>
+<li><code>envList</code> is the list of ENV values, default to <code>[&apos;test&apos;, &apos;development&apos;, &apos;staging&apos;, &apos;production&apos;]</code>.</li>
+<li><code>envName</code> is default to <code>NODE_ENV</code>.</li>
+</ul>
+<p>Now you can use the function to get a value corresponding to the current ENV.</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">const value = defaults([&apos;valueA&apos;, &apos;valueB&apos;, &apos;valueC&apos;, &apos;valueD&apos;]);</code>
+</code></pre>
+<ul>
+<li>For example, with the default <code>envList</code>, and the ENV <code>development</code>, the <code>value</code> will be <code>valueB</code>.</li>
+<li>Note that the ENV is used at build-time (when you run <code>builder()</code>), and not at run-time.</li>
+</ul>
+<p>If you give the <code>builder</code> an env list:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">const defaults = builder([&apos;test&apos;, &apos;development&apos;, &apos;integration&apos;, &apos;staging&apos;, &apos;production&apos;]);</code>
+</code></pre>
+<p>Then you must give the <code>defaults</code> a list of default values matches to it:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">const value = defaults([&apos;valueA&apos;, &apos;valueB&apos;, &apos;valueC&apos;, &apos;valueD&apos;, &apos;valueE&apos;]);</code>
+</code></pre>
+<ul>
+<li>For example, with the ENV <code>integration</code>, the <code>value</code> will be <code>valueC</code>.</li>
+</ul>
+<h3 id="the--quot-injected-quot-">The &quot;injected&quot;</h3><p>The <code>injected</code> can give you an augmented <code>env-var</code>:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">const env = injected([envList, [envName]]);</code>
+</code></pre>
+<ul>
+<li>It accepts the same arguments with <code>builder</code>.</li>
+<li>It returns what <code>env-var</code> would give you with just the <code>get()</code> function augmented.</li>
+</ul>
+<p>And you use it like the initial example:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">const logStream = env.get(&apos;LOG_STREAM&apos;, [&apos;debug&apos;, &apos;debug&apos;, &apos;syslog&apos;, &apos;syslog&apos;]).asString();</code>
+</code></pre>
+<p>You can also use it in the original way, if you have just one default value:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">const logStream = env.get(&apos;LOG_STREAM&apos;, &apos;debug&apos;).asString();</code>
+</code></pre>
+</div>
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.0.4)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+{
+  "coverage": "55.55%",
+  "expectCount": 9,
+  "actualCount": 5,
+  "files": {
+    "lib/builder.js": {
+      "expectCount": 5,
+      "actualCount": 4,
+      "undocumentLines": [
+        3
+      ]
+    },
+    "lib/injected.js": {
+      "expectCount": 4,
+      "actualCount": 1,
+      "undocumentLines": [
+        3,
+        4,
+        5
+      ]
+    }
+  }
+}

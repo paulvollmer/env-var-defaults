@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">test/10.usecase.test.js | env-var-defaults</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="env-var-defaults"><meta property="og:type" content="website"><meta property="og:url" content="https://Wiredcraft.net"><meta property="og:site_name" content="env-var-defaults"><meta property="og:title" content="env-var-defaults"><meta property="og:image" content="https://wiredcraft.com/assets/logo.svg"><meta property="og:description" content="env-var-defaults"><meta property="og:author" content="https://github.com/Wiredcraft"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="env-var-defaults"><meta property="twitter:description" content="env-var-defaults"><meta property="twitter:image" content="https://wiredcraft.com/assets/logo.svg"></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/Wiredcraft/env-var-defaults"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-builder">builder</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-injected">injected</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-DEFAULT_ENV">DEFAULT_ENV</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-DEFAULT_ENV_LIST">DEFAULT_ENV_LIST</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-DEFAULT_ENV_NAME">DEFAULT_ENV_NAME</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">test/10.usecase.test.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&apos;use strict&apos;;
+
+const should = require(&apos;should&apos;);
+const builder = require(&apos;../lib/builder&apos;);
+const injected = require(&apos;../lib/injected&apos;);
+
+describe(&apos;Use cases&apos;, () =&gt; {
+  const NODE_ENV = process.env.NODE_ENV;
+
+  describe(&apos;With default arguments and test env&apos;, () =&gt; {
+    let defaults;
+
+    before(() =&gt; {
+      process.env.NODE_ENV = &apos;test&apos;;
+      defaults = builder();
+    });
+
+    after(() =&gt; {
+      process.env.NODE_ENV = NODE_ENV;
+    });
+
+    it(&apos;should yield nothing with nothing&apos;, () =&gt; {
+      should(defaults()).equal(undefined);
+    });
+
+    it(&apos;should yield string with string&apos;, () =&gt; {
+      should(defaults(&apos;lorem&apos;)).equal(&apos;lorem&apos;);
+    });
+
+    it(&apos;should yield nothing with empty array&apos;, () =&gt; {
+      should(defaults([])).equal(undefined);
+    });
+
+    it(&apos;should yield value with an array&apos;, () =&gt; {
+      should(defaults([&apos;lorem&apos;])).equal(&apos;lorem&apos;);
+    });
+
+    it(&apos;should yield value with an array&apos;, () =&gt; {
+      should(defaults([&apos;ipsum&apos;, &apos;dolor&apos;])).equal(&apos;ipsum&apos;);
+    });
+  });
+
+  describe(&apos;With default arguments and development env&apos;, () =&gt; {
+    let defaults;
+
+    before(() =&gt; {
+      process.env.NODE_ENV = &apos;development&apos;;
+      defaults = builder();
+    });
+
+    after(() =&gt; {
+      process.env.NODE_ENV = NODE_ENV;
+    });
+
+    it(&apos;should yield nothing with nothing&apos;, () =&gt; {
+      should(defaults()).equal(undefined);
+    });
+
+    it(&apos;should yield string with string&apos;, () =&gt; {
+      should(defaults(&apos;lorem&apos;)).equal(&apos;lorem&apos;);
+    });
+
+    it(&apos;should yield nothing with empty array&apos;, () =&gt; {
+      should(defaults([])).equal(undefined);
+    });
+
+    it(&apos;should yield value with an array&apos;, () =&gt; {
+      should(defaults([&apos;lorem&apos;])).equal(undefined);
+    });
+
+    it(&apos;should yield value with an array&apos;, () =&gt; {
+      should(defaults([&apos;ipsum&apos;, &apos;dolor&apos;])).equal(&apos;dolor&apos;);
+    });
+  });
+
+  describe(&apos;The injected with default arguments and test env&apos;, () =&gt; {
+    let env;
+
+    before(() =&gt; {
+      process.env.NODE_ENV = &apos;test&apos;;
+      env = injected();
+    });
+
+    after(() =&gt; {
+      process.env.NODE_ENV = NODE_ENV;
+    });
+
+    it(&apos;should yield nothing with nothing&apos;, () =&gt; {
+      should(env.get(&apos;TEST_LOREM&apos;).asString()).equal(undefined);
+      process.env.TEST_LOREM = &apos;test_lorem&apos;;
+      should(env.get(&apos;TEST_LOREM&apos;).asString()).equal(&apos;test_lorem&apos;);
+      delete process.env.TEST_LOREM;
+    });
+
+    it(&apos;should yield string with string&apos;, () =&gt; {
+      should(env.get(&apos;TEST_LOREM&apos;, &apos;lorem&apos;).asString()).equal(&apos;lorem&apos;);
+      process.env.TEST_LOREM = &apos;test_lorem&apos;;
+      should(env.get(&apos;TEST_LOREM&apos;, &apos;lorem&apos;).asString()).equal(&apos;test_lorem&apos;);
+      delete process.env.TEST_LOREM;
+    });
+
+    it(&apos;should yield nothing with empty array&apos;, () =&gt; {
+      should(env.get(&apos;TEST_LOREM&apos;, []).asString()).equal(undefined);
+      process.env.TEST_LOREM = &apos;test_lorem&apos;;
+      should(env.get(&apos;TEST_LOREM&apos;, []).asString()).equal(&apos;test_lorem&apos;);
+      delete process.env.TEST_LOREM;
+    });
+
+    it(&apos;should yield value with an array&apos;, () =&gt; {
+      should(env.get(&apos;TEST_LOREM&apos;, [&apos;lorem&apos;]).asString()).equal(&apos;lorem&apos;);
+      process.env.TEST_LOREM = &apos;test_lorem&apos;;
+      should(env.get(&apos;TEST_LOREM&apos;, [&apos;lorem&apos;]).asString()).equal(&apos;test_lorem&apos;);
+      delete process.env.TEST_LOREM;
+    });
+
+    it(&apos;should yield value with an array&apos;, () =&gt; {
+      should(env.get(&apos;TEST_LOREM&apos;, [&apos;ipsum&apos;, &apos;dolor&apos;]).asString()).equal(&apos;ipsum&apos;);
+      process.env.TEST_LOREM = &apos;test_lorem&apos;;
+      should(env.get(&apos;TEST_LOREM&apos;, [&apos;ipsum&apos;, &apos;dolor&apos;]).asString()).equal(&apos;test_lorem&apos;);
+      delete process.env.TEST_LOREM;
+    });
+  });
+
+  describe(&apos;The injected with default arguments and development env&apos;, () =&gt; {
+    let env;
+
+    before(() =&gt; {
+      process.env.NODE_ENV = &apos;development&apos;;
+      env = injected();
+    });
+
+    after(() =&gt; {
+      process.env.NODE_ENV = NODE_ENV;
+    });
+
+    it(&apos;should yield nothing with nothing&apos;, () =&gt; {
+      should(env.get(&apos;TEST_LOREM&apos;).asString()).equal(undefined);
+      process.env.TEST_LOREM = &apos;test_lorem&apos;;
+      should(env.get(&apos;TEST_LOREM&apos;).asString()).equal(&apos;test_lorem&apos;);
+      delete process.env.TEST_LOREM;
+    });
+
+    it(&apos;should yield string with string&apos;, () =&gt; {
+      should(env.get(&apos;TEST_LOREM&apos;, &apos;lorem&apos;).asString()).equal(&apos;lorem&apos;);
+      process.env.TEST_LOREM = &apos;test_lorem&apos;;
+      should(env.get(&apos;TEST_LOREM&apos;, &apos;lorem&apos;).asString()).equal(&apos;test_lorem&apos;);
+      delete process.env.TEST_LOREM;
+    });
+
+    it(&apos;should yield nothing with empty array&apos;, () =&gt; {
+      should(env.get(&apos;TEST_LOREM&apos;, []).asString()).equal(undefined);
+      process.env.TEST_LOREM = &apos;test_lorem&apos;;
+      should(env.get(&apos;TEST_LOREM&apos;, []).asString()).equal(&apos;test_lorem&apos;);
+      delete process.env.TEST_LOREM;
+    });
+
+    it(&apos;should yield value with an array&apos;, () =&gt; {
+      should(env.get(&apos;TEST_LOREM&apos;, [&apos;lorem&apos;]).asString()).equal(undefined);
+      process.env.TEST_LOREM = &apos;test_lorem&apos;;
+      should(env.get(&apos;TEST_LOREM&apos;, [&apos;lorem&apos;]).asString()).equal(&apos;test_lorem&apos;);
+      delete process.env.TEST_LOREM;
+    });
+
+    it(&apos;should yield value with an array&apos;, () =&gt; {
+      should(env.get(&apos;TEST_LOREM&apos;, [&apos;ipsum&apos;, &apos;dolor&apos;]).asString()).equal(&apos;dolor&apos;);
+      process.env.TEST_LOREM = &apos;test_lorem&apos;;
+      should(env.get(&apos;TEST_LOREM&apos;, [&apos;ipsum&apos;, &apos;dolor&apos;]).asString()).equal(&apos;test_lorem&apos;);
+      delete process.env.TEST_LOREM;
+    });
+  });
+});
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.0.4)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
